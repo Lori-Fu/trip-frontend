@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -16,10 +16,10 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -32,13 +32,19 @@ export default function Login() {
         },
       })
       .catch((error) => {
-        console.log(error);
         alert("Something went wrong. Please try agian later");
       });
     if (data.code != 0 || data.error) {
       alert("Invalid Username and Password");
     } else {
+      const userInfo = data.userInfo;
+      localStorage.setItem("token", userInfo.token);
+      localStorage.setItem("user_id", userInfo.user.id);
+      localStorage.setItem("username", userInfo.user.username);
+      localStorage.setItem("login_time", userInfo.user.login_time);
+      localStorage.setItem("expire_time", userInfo.user.expire_time);
       alert("Welcome");
+      // setIsLoggedIn(true);
       navigate("/");
     }
   };
