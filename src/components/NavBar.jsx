@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
@@ -10,23 +11,21 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
+import * as actions from "../reducer/actions";
 
 export default function NavBar() {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("username");
-    localStorage.removeItem("login_time");
-    localStorage.removeItem("expire_time");
+    dispatch(actions.logout());
     alert("You are logged out");
-    setIsLoggedIn(false);
   };
 
   const sections = [
     { title: "homepage", url: "/" },
-    { title: "trending", url: "/trending" },
+    { title: "search", url: "/search" },
     { title: "destinations", url: "/destinations" },
     { title: "plan route", url: "/plan" },
     { title: "my account", url: "/user/profile" },
@@ -93,7 +92,7 @@ export default function NavBar() {
             inputProps={{ "aria-label": "search" }}
           />
         </Search>
-        {false ? (
+        {user && user.expire_time > new Date().getTime() ? (
           <Button onClick={() => logout()} variant="outlined" size="small">
             Log Out
           </Button>

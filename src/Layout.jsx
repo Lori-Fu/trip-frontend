@@ -4,11 +4,11 @@ import Box from "@mui/material/Box";
 
 import NavBar from "./components/NavBar";
 
-const Layout = ({ isLoggedIn, setIsLoggedIn, children }) => {
+const Layout = ({ children }) => {
   return (
     <Box>
       <CssBaseline />
-      <NavBar isLoggedin={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <NavBar />
       {children}
     </Box>
   );

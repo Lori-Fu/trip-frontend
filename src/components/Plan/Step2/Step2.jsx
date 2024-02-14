@@ -145,12 +145,14 @@ export default function Step2({
           }}
         >
           <Box sx={{ width: "100%" }}>
-            {availableAttractions && (
+            {availableAttractions ? (
               <ShowAttractions
                 tabNum={tabNum}
                 attractions={availableAttractions}
                 chosenAttractions={chosenAttractions}
               />
+            ) : (
+              <Typography variant="body1">Loading...</Typography>
             )}
             <Box
               sx={{

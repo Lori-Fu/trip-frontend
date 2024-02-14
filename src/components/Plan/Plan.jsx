@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stepper from "@mui/material/Stepper";
@@ -11,6 +11,7 @@ import Step2 from "./Step2/Step2";
 import Step3 from "./Step3/Step3";
 import Step4 from "./Step4";
 import axios from "axios";
+import { uploadFileToS3 } from "./aws";
 
 const steps = [
   "Select Your Destination",
@@ -43,7 +44,8 @@ function getStepContent(
   getStateAttractions,
   availableAttractions,
   chosenAttractions,
-  setChosenAttractions
+  setChosenAttractions,
+  setCover
 ) {
   switch (activeStep) {
     case 0:
@@ -82,6 +84,7 @@ function getStepContent(
           upload={upload}
           articleHeader={articleHeader}
           setArticleHeader={setArticleHeader}
+          setCover={setCover}
         />
       );
     case 3:
@@ -94,7 +97,7 @@ function getStepContent(
 }
 
 export default function Plan() {
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
   const [activeStep, setActiveStep] = useState(0);
   const [selectedState, setSelectedState] = useState("default");
@@ -111,6 +114,7 @@ export default function Plan() {
 
   const [availableAttractions, setAvailableAttractions] = useState([]);
   const [chosenAttractions, setChosenAttractions] = useState([]);
+  const [cover, setCover] = useState();
 
   const getStateAttractions = async (currentState) => {
     setSelectedState(currentState);
@@ -123,24 +127,26 @@ export default function Plan() {
   };
 
   const upload = async () => {
-    console.log("here");
     setUploading(true);
+    let imageUrl = await uploadFileToS3(cover, selectedState);
+
     await axios
       .post(
         "/api/article/new",
         {
           state: selectedState,
           day_count: widgets.length,
-          header: articleHeader,
-          articleBody: articleBody,
+          title: articleHeader,
+          content_body: articleBody,
           content_head: articleHead,
           content_tail: articleTail,
           itinerary: widgets,
           visibility: selectedVisibility,
+          cover_url: imageUrl,
         },
         {
           headers: {
-            Token: localStorage.getItem("token"),
+            Token: user.token,
           },
         }
       )
@@ -154,6 +160,8 @@ export default function Plan() {
       .catch((error) => {
         setUploading(false);
         setSuccess(false);
+        alert("Error");
+        setActiveStep(2);
       });
   };
 
@@ -199,7 +207,8 @@ export default function Plan() {
               getStateAttractions,
               availableAttractions,
               chosenAttractions,
-              setChosenAttractions
+              setChosenAttractions,
+              setCover
             )}
           </React.Fragment>
         </Container>

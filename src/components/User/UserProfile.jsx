@@ -1,14 +1,13 @@
 import React from "react";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Home from "./Home";
 
-const UserProfile = ({ isLoggedIn, setIsLoggedIn }) => {
-  const navigate = useNavigate();
+const UserProfile = () => {
+  const user = useSelector((state) => state.user);
 
   return (
     <Home>
-      <p>Profile</p>
+      <p>Username: {user.username}</p>
     </Home>
   );
 };

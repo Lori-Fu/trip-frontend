@@ -66,7 +66,9 @@ export default function Itinerary({ itinerary }) {
         streetViewControl: false,
       }}
     >
-      {itinerary.length == 1 && <Marker position={centerLatLan} />}
+      {itinerary.length == 1 && centerLatLan && (
+        <Marker position={centerLatLan} />
+      )}
       {itinerary.length > 1 && directionResponse && (
         <DirectionsRenderer directions={directionResponse} />
       )}

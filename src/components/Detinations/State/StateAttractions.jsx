@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import AttractionCard from "./AttractionCard";
 import Typography from "@mui/material/Typography";

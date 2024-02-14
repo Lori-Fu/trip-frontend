@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,9 +14,11 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import * as actions from "../../reducer/actions";
 import axios from "axios";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -37,14 +40,9 @@ export default function Login() {
     if (data.code != 0 || data.error) {
       alert("Invalid Username and Password");
     } else {
-      const userInfo = data.userInfo;
-      localStorage.setItem("token", userInfo.token);
-      localStorage.setItem("user_id", userInfo.user.id);
-      localStorage.setItem("username", userInfo.user.username);
-      localStorage.setItem("login_time", userInfo.user.login_time);
-      localStorage.setItem("expire_time", userInfo.user.expire_time);
-      alert("Welcome");
-      // setIsLoggedIn(true);
+      let { user } = data.userInfo;
+      user = { ...user, token: data.userInfo.token };
+      dispatch(actions.login(user));
       navigate("/");
     }
   };

@@ -32,9 +32,9 @@ const Sidebar = () => {
       case "/user/likes":
         setSelectedIndex(3);
         break;
-      case "/user/comments":
-        setSelectedIndex(4);
-        break;
+      // case "/user/comments":
+      //   setSelectedIndex(4);
+      // break;
     }
   }, []);
 
@@ -62,7 +62,7 @@ const Sidebar = () => {
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
-        <ListItemText primary="Your Trips" />
+        <ListItemText primary="Your Articles" />
       </ListItemButton>
       <ListItemButton
         selected={selectedIndex === 2}
@@ -88,7 +88,7 @@ const Sidebar = () => {
         </ListItemIcon>
         <ListItemText primary="Your Likes" />
       </ListItemButton>
-      <ListItemButton
+      {/* <ListItemButton
         selected={selectedIndex === 4}
         onClick={(event) => {
           handleListItemClick(event, 4);
@@ -99,7 +99,7 @@ const Sidebar = () => {
           <LayersIcon />
         </ListItemIcon>
         <ListItemText primary="Your Comments" />
-      </ListItemButton>
+      </ListItemButton> */}
     </>
   );
 };

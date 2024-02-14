@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import HotPost from "../../Homepage/HotPost";
+import ArticleCard from "../../ArticleCard";
 
 const StateArticle = () => {
   const featuredPosts = [
@@ -49,7 +49,7 @@ const StateArticle = () => {
         <Divider />
         <Grid container spacing={4} sx={{ marginTop: 1 }}>
           {featuredPosts.map((post) => (
-            <HotPost key={post.title} post={post} />
+            <ArticleCard key={post.title} post={post} />
           ))}
         </Grid>
       </Container>

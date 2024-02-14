@@ -10,6 +10,7 @@ import RadioGroup from "@mui/joy/RadioGroup";
 import AddHeadArea from "./AddHeadArea";
 import AddHeaderArea from "./AddHeaderArea";
 import AddTailArea from "./AddTailArea";
+import CoverUpload from "./CoverUpload";
 
 export default function Step3({
   articleHead,
@@ -22,6 +23,7 @@ export default function Step3({
   upload,
   articleHeader,
   setArticleHeader,
+  setCover,
 }) {
   const handleChange = (event) => {
     setSelectedVisibility(event.target.value);
@@ -59,12 +61,13 @@ export default function Step3({
                     setArticleHead={setArticleHead}
                   />
                 </Box>
-                <Box>
+                <Box sx={{ marginBottom: 2 }}>
                   <AddTailArea
                     articleTail={articleTail}
                     setArticleTail={setArticleTail}
                   />
                 </Box>
+                <CoverUpload setCover={setCover} />
               </Box>
             </Grid>
           </Grid>

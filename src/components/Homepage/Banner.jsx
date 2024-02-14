@@ -5,7 +5,7 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 
-const Trending = () => {
+const Banner = () => {
   return (
     <Paper
       sx={{
@@ -45,21 +45,25 @@ const Trending = () => {
               pr: { md: 0 },
             }}
           >
-            <Typography
+            {/* <Typography
               component="h1"
               variant="h3"
               color="inherit"
               gutterBottom
             >
-              {"Title"}
+              Title
+            </Typography> */}
+            <Typography
+              variant="h5"
+              color="inherit"
+              style={{ whiteSpace: "pre-line" }}
+              paragraph
+            >
+              {`Embark on a Journey of a Lifetime:
+              Explore, Experience, and Embrace the Wonders of the World – Your Adventure Awaits, Seize it Today.`}
             </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              {
-                "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents."
-              }
-            </Typography>
-            <Link variant="subtitle1" href="#">
-              {"Text"}
+            <Link variant="subtitle1" color="inherit" href="/search">
+              {"Start Exploring"}
             </Link>
           </Box>
         </Grid>
@@ -68,4 +72,4 @@ const Trending = () => {
   );
 };
 
-export default Trending;
+export default Banner;

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Register from "./components/User/Register.jsx";
 import Homepage from "./components/Homepage/Homepage.jsx";
 import UserProfile from "./components/User/UserProfile.jsx";
 import UserTrips from "./components/User/UserTrips.jsx";
 import UserCollections from "./components/User/UserCollections.jsx";
 import UserLikes from "./components/User/UserLikes.jsx";
-import UserComments from "./components/User/UserComments.jsx";
+// import UserComments from "./components/User/UserComments.jsx";
 import Login from "./components/User/Login.jsx";
 import Article from "./components/Article/Article.jsx";
 import Error from "./components/Error.jsx";
@@ -15,12 +15,11 @@ import Destinations from "./components/Detinations/Destinations.jsx";
 import StateDestination from "./components/Detinations/State/StateDestination.jsx";
 import Layout from "./Layout.jsx";
 import Plan from "./components/Plan/Plan.jsx";
-import Trending from "./components/Homepage/Trending.jsx";
+import Search from "./components/Search/Search.jsx";
 import AttractionDetail from "./components/Detinations/AttractionDetail.jsx";
 
 function App() {
-  const [isLoggedin, setIsLoggedIn] = useState(false);
-  const [loginExpireTime, setLoginExpireTime] = useState();
+  const user = useSelector((state) => state.user);
 
   return (
     <>
@@ -34,48 +33,86 @@ function App() {
           }
         />
         {/* User */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/register"
+          element={
+            user && user.expire_time > new Date().getTime() ? (
+              <Navigate to="/" />
+            ) : (
+              <Register />
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            user && user.expire_time > new Date().getTime() ? (
+              <Navigate to="/" />
+            ) : (
+              <Login />
+            )
+          }
+        />
         <Route
           path="/user/profile"
           element={
-            <Layout>
-              <UserProfile />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <UserProfile />
+              </Layout>
+            )
           }
         />
         <Route
           path="/user/trips"
           element={
-            <Layout>
-              <UserTrips />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <UserTrips />
+              </Layout>
+            )
           }
         />
         <Route
           path="/user/collections"
           element={
-            <Layout>
-              <UserCollections />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <UserCollections />
+              </Layout>
+            )
           }
         />
         <Route
           path="/user/likes"
           element={
-            <Layout>
-              <UserLikes />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <UserLikes />
+              </Layout>
+            )
           }
         />
-        <Route
+        {/* <Route
           path="/user/comments"
           element={
-            <Layout>
-              <UserComments />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <UserComments />
+              </Layout>
+            )
           }
-        />
+        /> */}
         {/* Article */}
         <Route
           path="/article/:id"
@@ -115,17 +152,21 @@ function App() {
         <Route
           path="/plan"
           element={
-            <Layout>
-              <Plan />
-            </Layout>
+            !user || user.expire_time < new Date().getTime() ? (
+              <Navigate to="/login" />
+            ) : (
+              <Layout>
+                <Plan />
+              </Layout>
+            )
           }
         />
-        {/* Trending */}
+        {/* Search */}
         <Route
-          path="/trending"
+          path="/search/:searchKey?"
           element={
             <Layout>
-              <Trending />
+              <Search />
             </Layout>
           }
         />
